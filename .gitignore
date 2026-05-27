@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Build and release artifacts
+dist/
+build/
+*.zip
+*.tar.gz
+*.sha256
+
+# Local validation workspaces and generated reports
+workspaces/
+tmp/
+temp/
+*.log
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

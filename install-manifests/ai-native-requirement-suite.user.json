@@ -1,0 +1,53 @@
+{
+  "skill_name": "ai-native-requirement-suite",
+  "version": "0.25.0",
+  "package_type": "skill_suite",
+  "lifecycle_status": "v0.25-public-preview",
+  "contains_subskills": [
+    "requirement-router",
+    "idea-to-demand",
+    "demand-to-prd-spec",
+    "ai-ready-spec",
+    "requirement-quality-review"
+  ],
+  "provided_by_suite": null,
+  "conflicts_with": [
+    "skills/ai-ready-spec",
+    "skills/requirement-asset-validator",
+    "skills/requirement-wiki-generator"
+  ],
+  "source_path": "skills/ai-native-requirement-suite",
+  "install_target": "user-level",
+  "target_path": "{CODEX_HOME}/skills/ai-native-requirement-suite",
+  "promotion_evidence": [
+    "README.md",
+    "USER-GUIDE.md",
+    "ROADMAP.md",
+    "PUBLIC-RELEASE-CHECKLIST.md"
+  ],
+  "verify_commands": [
+    "{python} shared/validators/requirement-asset-validator/scripts/validate_requirement_asset.py --help",
+    "{python} shared/tools/requirement-wiki-generator/scripts/build_wiki.py --help"
+  ],
+  "post_install_checks": [
+    "SKILL.md exists",
+    "subskills/requirement-router/SKILL.md exists",
+    "subskills/idea-to-demand/SKILL.md exists",
+    "subskills/demand-to-prd-spec/SKILL.md exists",
+    "subskills/ai-ready-spec/SKILL.md exists",
+    "subskills/requirement-quality-review/SKILL.md exists",
+    "subskills/requirement-quality-review/adapters/testability-check.md exists",
+    "subskills/requirement-quality-review/adapters/ai-readiness-check.md exists",
+    "subskills/requirement-quality-review/adapters/consistency-check.md exists",
+    "shared/schemas/README.md exists",
+    "shared/schemas/prd-spec.schema.md exists",
+    "shared/templates/README.md exists",
+    "shared/templates/prd-spec.template.md exists",
+    "shared/methodology-orchestration.json exists",
+    "shared/glossary.md exists",
+    "shared/examples/README.md exists",
+    "shared/install.md exists",
+    "shared/validators/requirement-asset-validator/SKILL.md exists",
+    "shared/tools/requirement-wiki-generator/SKILL.md exists"
+  ]
+}

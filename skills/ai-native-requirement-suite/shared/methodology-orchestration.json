@@ -1,0 +1,214 @@
+{
+  "schema_version": "0.4",
+  "status": "default_v0.25_methodology_orchestration_ux_hardened",
+  "resolution_policy": "resolve_by_runtime_skill_registry_then_relative_hint_else_fallback_style",
+  "notes": [
+    "本文件是可复用运行配置，不允许写入任何机器特定绝对路径。",
+    "preferred_command 表示用户或 agent 常用调用名。",
+    "expected_skill_names 表示运行时可在当前 skill registry 中查找的 skill name。",
+    "relative_skill_path_hints 仅是相对路径提示，运行时应从当前工具的 skill roots 或已安装 skill registry 解析。",
+    "如果 preferred_command / expected_skill_names 对应的 skill 在当前运行环境可用，应优先调用该 skill。",
+    "如果对应 skill 不可用，执行者应降级为 fallback_style 中描述的问题策略或评审视角。",
+    "本配置不让第三方 skill 成为硬运行时依赖。",
+    "用户可以自然语言使用 suite，也可以手动指定某个第三方命令；手动指定会被纳入方法组合，但不能越过阶段边界。"
+  ],
+  "entry_modes": {
+    "suite_auto": {
+      "description": "用户只表达业务目标或输入材料，由 suite/router 判断阶段并自动选择方法组合。",
+      "default_for_users": true,
+      "requires_user_to_know_third_party_commands": false
+    },
+    "subskill_direct": {
+      "description": "用户直接指定 idea-to-demand、demand-to-prd-spec 等一等子 skill。",
+      "default_for_users": false,
+      "requires_user_to_know_third_party_commands": false
+    },
+    "manual_method_override": {
+      "description": "用户显式指定 brainstorming、office-hours、grill-me、grill-with-docs、plan-ceo-review 或 plan-eng-review 等第三方命令或风格。",
+      "default_for_users": false,
+      "requires_user_to_know_third_party_commands": true,
+      "policy": [
+        "优先尊重用户显式指定的方法，并写入 methodology_trace。",
+        "如果指定方法适合当前阶段，则纳入 primary 或 secondary 方法组合。",
+        "如果指定方法只适合作为补充，则说明边界后作为 optional 方法使用。",
+        "如果指定方法不适合当前阶段，则说明原因，并建议改用更合适阶段或仅降级为轻量问题策略。",
+        "如果指定方法在运行环境不可用，则降级为 fallback_style；不得声称已真实调用外部 skill。",
+        "用户指定方法不能允许补造需求、跳过澄清或越过质量门禁。"
+      ]
+    }
+  },
+  "methodology_trace_contract": {
+    "required_fields": [
+      "entry_mode",
+      "selected_methods",
+      "manual_methods_requested",
+      "methods_used_or_fallback",
+      "methods_skipped",
+      "stop_basis"
+    ],
+    "description": "idea-to-demand 和 demand-to-prd-spec 必须在输出中简要说明本轮使用了哪些方法、为什么使用、是否发生降级、以及为何可以停止或必须继续澄清。"
+  },
+  "methods": {
+    "superpowers_brainstorming": {
+      "source_family": "Superpowers",
+      "preferred_command": "brainstorming",
+      "expected_skill_names": [
+        "brainstorming"
+      ],
+      "relative_skill_path_hints": [
+        "brainstorming/SKILL.md",
+        "superpowers/skills/brainstorming/SKILL.md"
+      ],
+      "fallback_style": "Superpowers brainstorming-style divergent exploration",
+      "primary_use": "发散、机会澄清、用户场景探索、备选流程补充"
+    },
+    "gstack_office_hours": {
+      "source_family": "gstack",
+      "preferred_command": "office-hours",
+      "expected_skill_names": [
+        "office-hours"
+      ],
+      "relative_skill_path_hints": [
+        "gstack/office-hours/SKILL.md"
+      ],
+      "fallback_style": "gstack office-hours-style forcing questions",
+      "primary_use": "价值、目标用户、痛点强度、首期范围、优先级判断"
+    },
+    "matt_pocock_grill_me": {
+      "source_family": "Matt Pocock agent skills",
+      "preferred_command": "grill-me",
+      "expected_skill_names": [
+        "grill-me"
+      ],
+      "relative_skill_path_hints": [
+        "grill-me/SKILL.md",
+        "agent-skills/grill-me/SKILL.md"
+      ],
+      "fallback_style": "Matt Pocock grill-me-style interview and challenge review",
+      "primary_use": "反例、漏洞、隐含假设、边界缺口和风险挑战"
+    },
+    "matt_pocock_grill_with_docs": {
+      "source_family": "Matt Pocock agent skills",
+      "preferred_command": "grill-with-docs",
+      "expected_skill_names": [
+        "grill-with-docs"
+      ],
+      "relative_skill_path_hints": [
+        "grill-with-docs/SKILL.md",
+        "agent-skills/grill-with-docs/SKILL.md"
+      ],
+      "fallback_style": "Matt Pocock grill-with-docs-style domain terminology and decision documentation review",
+      "primary_use": "需求术语澄清、上下文术语建议、范围/边界/取舍决策记录候选"
+    },
+    "gstack_plan_ceo_review": {
+      "source_family": "gstack",
+      "preferred_command": "plan-ceo-review",
+      "expected_skill_names": [
+        "plan-ceo-review"
+      ],
+      "relative_skill_path_hints": [
+        "gstack/plan-ceo-review/SKILL.md"
+      ],
+      "fallback_style": "gstack plan-ceo-review-style strategic scope challenge",
+      "primary_use": "业务判断、战略价值、范围取舍、首期目标强度复核"
+    },
+    "gstack_plan_eng_review": {
+      "source_family": "gstack",
+      "preferred_command": "plan-eng-review",
+      "expected_skill_names": [
+        "plan-eng-review"
+      ],
+      "relative_skill_path_hints": [
+        "gstack/plan-eng-review/SKILL.md"
+      ],
+      "fallback_style": "gstack plan-eng-review-style feasibility and delivery review",
+      "primary_use": "工程可行性、实现边界、拆分风险、测试可用性复核"
+    }
+  },
+  "stage_defaults": {
+    "idea-to-demand": {
+      "primary_methods": [
+        "superpowers_brainstorming",
+        "gstack_office_hours"
+      ],
+      "secondary_methods": [
+        "matt_pocock_grill_me"
+      ],
+      "optional_on_user_request": [
+        "gstack_plan_ceo_review",
+        "gstack_plan_eng_review"
+      ],
+      "not_default_methods": [
+        "gstack_plan_ceo_review",
+        "gstack_plan_eng_review",
+        "matt_pocock_grill_with_docs"
+      ],
+      "method_selection_policy": [
+        "默认先发散再聚焦，避免早期想法过早收敛。",
+        "brainstorming 用于机会、场景和备选方向。",
+        "office-hours 用于价值、目标用户、痛点强度和首期范围判断。",
+        "grill-me 仅用于轻量挑战明显反例和高风险假设。",
+        "用户指定 plan-ceo-review 或 plan-eng-review 时，只作为可选补充，不把早期 idea 直接推进到工程计划。",
+        "用户指定 grill-with-docs 时，通常提示该方法更适合 demand-to-prd-spec；本阶段只可降级为术语/上下文问题提示。"
+      ],
+      "stop_criteria": {
+        "can_advance_to_next_stage": [
+          "目标用户清楚。",
+          "痛点和业务目标可以区分。",
+          "至少有 2 个关键场景或 1 个高置信核心场景。",
+          "首期范围和非目标已形成可讨论边界。",
+          "关键假设、开放问题和风险已列出。",
+          "不存在阻止理解需求本质的缺失信息。"
+        ],
+        "must_stop_for_more_clarification": [
+          "目标用户不清楚。",
+          "痛点和业务目标无法区分。",
+          "首期范围无法从备选方向中收敛。",
+          "关键场景缺失。",
+          "用户只给出一句泛泛请求。"
+        ]
+      },
+      "boundary": "不让早期想法过早收敛；只用轻量反例挑战暴露高风险假设。"
+    },
+    "demand-to-prd-spec": {
+      "primary_methods": [
+        "matt_pocock_grill_with_docs",
+        "matt_pocock_grill_me",
+        "gstack_office_hours",
+        "gstack_plan_ceo_review",
+        "gstack_plan_eng_review"
+      ],
+      "secondary_methods": [
+        "superpowers_brainstorming"
+      ],
+      "optional_on_user_request": [
+        "superpowers_brainstorming"
+      ],
+      "method_selection_policy": [
+        "默认围绕已确认 demand brief 做术语、范围、价值、工程可行性和拆分风险复核。",
+        "grill-with-docs 用于术语、上下文语言和决策记录候选。",
+        "grill-me 用于需求漏洞、隐含假设、反例和边界缺口。",
+        "office-hours 用于价值、目标用户、痛点强度和首期优先级。",
+        "plan-ceo-review 用于战略价值、范围取舍和首期目标强度。",
+        "plan-eng-review 用于工程可行性、实现边界、拆分风险和测试可用性。",
+        "brainstorming 只用于补充备选流程或用户场景，不重新发散到 idea 阶段。"
+      ],
+      "stop_criteria": {
+        "can_advance_to_next_stage": [
+          "PRD/spec 已包含目标用户、问题、业务目标、范围、非目标和核心流程。",
+          "Feature / Story 初始结构可被人类理解。",
+          "开放问题、风险和决策候选有稳定 ID 或清晰条目。",
+          "handoff-to-ai-ready-spec 明确哪些内容可转换、哪些不得编造。",
+          "不存在必须回到 idea 阶段重新定义需求的问题。"
+        ],
+        "must_stop_for_more_clarification": [
+          "缺少目标用户、核心问题或首期范围。",
+          "Feature / Story 无法形成可理解结构。",
+          "关键术语、边界或流程存在会影响 Story 拆分的歧义。",
+          "存在重大业务价值或工程可行性冲突，无法在 PRD/spec 中安全表达。"
+        ]
+      },
+      "boundary": "需求已确认后不重新发散到 idea 阶段；优先澄清术语、需求漏洞、范围取舍和工程可行性；V0.18+ 只输出术语/决策建议产物，不默认写入用户项目的 CONTEXT.md 或 ADR。"
+    }
+  }
+}
