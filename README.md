@@ -87,6 +87,7 @@ These are optional method references, not hard runtime dependencies. If a corres
 
 - [USER-GUIDE.md](USER-GUIDE.md)
 - [ROADMAP.md](ROADMAP.md)
+- [GITHUB-WORKFLOW.md](GITHUB-WORKFLOW.md)
 - [skills/ai-native-requirement-suite/SKILL.md](skills/ai-native-requirement-suite/SKILL.md)
 
 ## License
