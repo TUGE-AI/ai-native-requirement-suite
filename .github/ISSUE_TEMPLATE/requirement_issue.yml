@@ -1,0 +1,52 @@
+name: Requirement / Bug / Documentation issue
+description: Use this for public-safe bugs, requests, or documentation problems.
+labels: [needs-triage]
+body:
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Issue type
+      options:
+        - Bug
+        - Feature request
+        - Documentation
+        - Question
+        - Release / workflow
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: A concise statement of the problem or request.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Include the smallest public-safe context needed to understand the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Logs, screenshots, file links, or commit/issue references.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: This issue contains no secrets, credentials, private paths, or company-sensitive material.
+          required: true
