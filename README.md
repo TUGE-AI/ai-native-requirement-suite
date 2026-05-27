@@ -85,7 +85,6 @@ These are optional method references, not hard runtime dependencies. If a corres
 
 ## Documentation
 
-- [OPEN-SOURCE-OPERATING-SCHEME.md](OPEN-SOURCE-OPERATING-SCHEME.md)
 - [USER-GUIDE.md](USER-GUIDE.md)
 - [ROADMAP.md](ROADMAP.md)
 - [GITHUB-WORKFLOW.md](GITHUB-WORKFLOW.md)
